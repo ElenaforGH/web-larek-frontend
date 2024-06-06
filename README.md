@@ -42,16 +42,16 @@ yarn build
 ```
 ### Интерфейсы и типы:
 
-type EventName = string | RegExp;
+- type EventName = string | RegExp;
 
-type Subscriber = Function;
+- type Subscriber = Function;
 
-type EmitterEvent = {
+- type EmitterEvent = {
     eventName: string;
     data: unknown;
 };
 
-export interface IEvents {
+- export interface IEvents {
     on<T extends object>(event: EventName, callback: (data: T) => void): void;
     emit<T extends object>(event: string, data?: T): void;
     trigger<T extends object>(
@@ -60,26 +60,26 @@ export interface IEvents {
     ): (data: T) => void;
 }
 
-export type ApiListResponse<Type> = {
+- export type ApiListResponse<Type> = {
   total: number;
   items: Type[];
 };
 
-export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
+- export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
-export interface IApi {
+- export interface IApi {
   baseUrl: string;
   get(uri: string): Promise<object>;
   post(uri: string, data: object, method?: ApiPostMethods): Promise<object>;
 }
 
-export interface ILarekAPI {
+- export interface ILarekAPI {
   getProductsList: () => Promise<ICard[]>;
   getProduct: (id: string) => Promise<ICard>;
   orderProducts: (order: IOrder) => Promise<IOrderResult>;
 }
 
-export interface IAppState {
+- export interface IAppState {
   catalog: ICard[];
   basket: string[];
   preview: string | null;
@@ -87,20 +87,20 @@ export interface IAppState {
   loading: boolean;
 }
 
-export interface IActions {
+- export interface IActions {
   onClick: (event: MouseEvent) => void;
 }
 
-export interface IModalData {
+- export interface IModalData {
   content: HTMLElement;
 }
 
-export interface IPage {
+- export interface IPage {
   counter: number;
   catalog: HTMLElement[];
 }
 
-export interface ICard {
+- export interface ICard {
   id: string;
   description: string;
   image: string;
@@ -111,51 +111,51 @@ export interface ICard {
   button: string;
 }
 
-export type CatalogChangeEvent = {
+- export type CatalogChangeEvent = {
   catalog: ICard[];
 };
 
 
-export interface IBasket {
+- export interface IBasket {
   items: HTMLElement[];
   total: number;
 }
 
-export type FormErrors = Partial<Record<keyof IOrder, string>>;
+- export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
 
-export interface IFormState {
+- export interface IFormState {
   valid: boolean;
   errors: string[];
 }
 
 
-export interface IOrderForm {
+- export interface IOrderForm {
   payment: string;
   address: string;
 }
 
 
-export interface IContactsForm {
+- export interface IContactsForm {
   email: string;
   phone: string;
 }
 
-export interface IOrder extends IOrderForm, IContactsForm {
+- export interface IOrder extends IOrderForm, IContactsForm {
   total: number;
   items: string[];
 }
 
-export interface IOrderResult {
+- export interface IOrderResult {
   total: number;
   id: string;
 }
 
-export interface ISuccess {
+- export interface ISuccess {
   total: number;
 }
 
-export interface ISuccessActions {
+- export interface ISuccessActions {
   onClick: () => void;
 }
 
@@ -174,18 +174,18 @@ protected options: RequestInit;
 
     constructor(baseUrl: string, options: RequestInit = {}) {
     
-        this.baseUrl = baseUrl;
+     this.baseUrl = baseUrl;
         
-        this.options = {
+     this.options = {
         
-            headers: {
+      headers: {
             
-                'Content-Type': 'application/json',
+       'Content-Type': 'application/json',
                 
-                ...(options.headers as object ?? {})
+        ...(options.headers as object ?? {})
                 
-            }
-        };
+      }
+    };
         
     }
 
@@ -210,9 +210,9 @@ post(uri: string, data: object, method: ApiPostMethods = 'POST') — метод 
 
    constructor() {
    
-        this._events = new Map<EventName, Set<Subscriber>>();
+    this._events = new Map<EventName, Set<Subscriber>>();
         
-    }
+   }
 
 - Методы:
 
@@ -261,7 +261,7 @@ render(data?: Partial<T>): HTMLElement  - возвращает корневой 
 
     constructor(data: Partial<T>, protected events: IEvents) {
     
-        Object.assign(this, data);
+     Object.assign(this, data);
         
     }
 
@@ -319,9 +319,9 @@ readonly cdn: string;
 
     constructor(cdn: string, baseUrl: string, options?: RequestInit) {
     
-        super(baseUrl, options);
+     super(baseUrl, options);
         
-        this.cdn = cdn;
+     this.cdn = cdn;
         
     }
 
@@ -360,37 +360,37 @@ protected _button?: HTMLButtonElement.
 
     constructor (protected blockName: string, container: HTMLElement, actions?: IActions) {
     
-        super(container);
+     super(container);
         
-        this._title = container.querySelector(`.${blockName}__title`);
+     this._title = container.querySelector(`.${blockName}__title`);
         
-        this._image = container.querySelector(`.${blockName}__image`);
+     this._image = container.querySelector(`.${blockName}__image`);
         
-        this._price = container.querySelector(`.${blockName}__price`);
+     this._price = container.querySelector(`.${blockName}__price`);
         
-        this._description = container.querySelector(`.${blockName}__text`);
+     this._description = container.querySelector(`.${blockName}__text`);
         
-        this._category = container.querySelector(`.${blockName}__category`);
+     this._category = container.querySelector(`.${blockName}__category`);
 
-        this._index = container.querySelector('.basket__item-index');
+     this._index = container.querySelector('.basket__item-index');
         
-        this._button = container.querySelector(`.${blockName}__button`);
+     this._button = container.querySelector(`.${blockName}__button`);
 
-        if (actions?.onClick) {
+      if (actions?.onClick) {
         
-            if (this._button) {
+       if (this._button) {
             
-                this._button.addEventListener('click', actions.onClick);
+        this._button.addEventListener('click', actions.onClick);
                 
-            } else {
+       } else {
             
-                container.addEventListener('click', actions.onClick);
+        container.addEventListener('click', actions.onClick);
                 
-            }
+       }
             
-        }  
+      }  
         
-    }
+     }
 
 - Методы:
 
@@ -426,26 +426,24 @@ protected _button: HTMLElement;
 
     constructor(container: HTMLElement, protected events: EventEmitter) {
     
-        super(container);
+     super(container);
 
-        this._list = ensureElement<HTMLElement>('.basket__list', this.container);
+     this._list = ensureElement<HTMLElement>('.basket__list', this.container);
         
-        this._total = this.container.querySelector('.basket__price');
+     this._total = this.container.querySelector('.basket__price');
         
-        this._button = this.container.querySelector('.basket__button');
+     this._button = this.container.querySelector('.basket__button');
 
-        if (this._button) {
+     if (this._button) {
         
-            this._button.addEventListener('click', () => {
+      this._button.addEventListener('click', () => {
             
-                events.emit('order:open');
+       events.emit('order:open');
                 
-            });
-            
-        }
-        
-    }
-
+     });
+     
+    }
+     
 - Методы:
 
 set items(items: HTMLElement[]) - устанавливает список товаров в корзине. В зависимости от длины списка товаров меняется состояние кнопки «Оформить» и отображение сообщения «Корзина пуста»;
@@ -468,31 +466,31 @@ protected _errors: HTMLElement;
 
     constructor(protected container: HTMLFormElement, protected events: IEvents) {
     
-        super(container);
+     super(container);
 
-        this._submit = ensureElement<HTMLButtonElement>('button[type=submit]', this.container);
+     this._submit = ensureElement<HTMLButtonElement>('button[type=submit]', this.container);
         
-        this._errors = ensureElement<HTMLElement>('.form__errors', this.container);
+     this._errors = ensureElement<HTMLElement>('.form__errors', this.container);
 
-        this.container.addEventListener('input', (e: Event) => {
+     this.container.addEventListener('input', (e: Event) => {
         
-            const target = e.target as HTMLInputElement;
+     const target = e.target as HTMLInputElement;
             
-            const field = target.name as keyof T;
+     const field = target.name as keyof T;
             
-            const value = target.value;
+     const value = target.value;
             
-            this.onInputChange(field, value);
+     this.onInputChange(field, value);
             
-        });
+     });
 
-        this.container.addEventListener('submit', (e: Event) => {
+     this.container.addEventListener('submit', (e: Event) => {
         
-            e.preventDefault();
+      e.preventDefault();
             
-            this.events.emit(`${this.container.name}:submit`);
+      this.events.emit(`${this.container.name}:submit`);
             
-        });
+     });
         
     }
 
@@ -520,17 +518,18 @@ protected _content: HTMLElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
     
-        super(container);
+     super(container);
 
-        this._closeButton = ensureElement<HTMLButtonElement>('.modal__close', container);
+     this._closeButton = ensureElement<HTMLButtonElement>('.modal__close', container);
         
-        this._content = ensureElement<HTMLElement>('.modal__content', container);
+     this._content = ensureElement<HTMLElement>('.modal__content', container);
 
-        this._closeButton.addEventListener('click', this.close.bind(this));
+     this._closeButton.addEventListener('click', this.close.bind(this));
         
-        this.container.addEventListener('click', this.close.bind(this));
+     this.container.addEventListener('click', this.close.bind(this));
         
-        this._content.addEventListener('click', (event) => event.stopPropagation());
+     this._content.addEventListener('click', (event) => event.stopPropagation());
+     
     }
 
 - Методы:
@@ -557,17 +556,17 @@ protected _description: HTMLElement;
 
     constructor(container: HTMLElement, actions: ISuccessActions) {
     
-        super(container);
+     super(container);
 
-        this._close = ensureElement<HTMLElement>('.order-success__close', this.container);
+     this._close = ensureElement<HTMLElement>('.order-success__close', this.container);
         
-        this._description = ensureElement<HTMLElement>('.order-success__description', this.container);
+     this._description = ensureElement<HTMLElement>('.order-success__description', this.container);
 
-        if (actions?.onClick) {
+     if (actions?.onClick) {
         
-            this._close.addEventListener('click', actions.onClick);
+      this._close.addEventListener('click', actions.onClick);
             
-        }
+     }
         
     }
 
@@ -593,21 +592,21 @@ protected _basket: HTMLElement;
 
     constructor(container: HTMLElement, protected events: IEvents) {
     
-        super(container);
+     super(container);
 
-        this._counter = ensureElement<HTMLElement>('.header__basket-counter');
+     this._counter = ensureElement<HTMLElement>('.header__basket-counter');
         
-        this._catalog = ensureElement<HTMLElement>('.gallery');
+     this._catalog = ensureElement<HTMLElement>('.gallery');
         
-        this._wrapper = ensureElement<HTMLElement>('.page__wrapper');
+     this._wrapper = ensureElement<HTMLElement>('.page__wrapper');
         
-        this._basket = ensureElement<HTMLElement>('.header__basket');
+     this._basket = ensureElement<HTMLElement>('.header__basket');
 
-        this._basket.addEventListener('click', () => {
+     this._basket.addEventListener('click', () => {
         
-            this.events.emit('basket:open');
+      this.events.emit('basket:open');
             
-        });
+     });
         
     }
 
@@ -633,39 +632,39 @@ protected _buttonCash: HTMLButtonElement;
 
   constructor(container: HTMLFormElement, events: IEvents) {
   
-    super(container, events);
+   super(container, events);
 
-    this._buttonCard = container.querySelector('[name="card"]');
+   this._buttonCard = container.querySelector('[name="card"]');
     
-    this._buttonCash = container.querySelector('[name="cash"]');
+   this._buttonCash = container.querySelector('[name="cash"]');
 
-    this._buttonCard.addEventListener('click', () => {
+   this._buttonCard.addEventListener('click', () => {
     
-        this._buttonCard.classList.add('button__alt-active');
+    this._buttonCard.classList.add('button__alt-active');
         
-        this._buttonCash.classList.remove('button__alt-active');
+    this._buttonCash.classList.remove('button__alt-active');
         
-        this.onInputChange('payment', 'card');    
+    this.onInputChange('payment', 'card');    
         
-      });
+   });
     
     this._buttonCash.addEventListener('click', () => {
     
-        this._buttonCash.classList.add('button__alt-active');
+     this._buttonCash.classList.add('button__alt-active');
         
-        this._buttonCard.classList.remove('button__alt-active');
+     this._buttonCard.classList.remove('button__alt-active');
         
-        this.onInputChange('payment', 'cash');
+     this.onInputChange('payment', 'cash');
         
-      });
+   });
         
     this._submit.addEventListener('click', (event) => {
     
-        event.preventDefault();
+     event.preventDefault();
         
-        events.emit('contacts:open');
+     events.emit('contacts:open');
         
-      });
+    });
       
    }
    
@@ -683,19 +682,19 @@ clearPayment() - сбрасывает способ оплаты заказа.
 
     constructor(container: HTMLFormElement, events: IEvents) {
     
-        super(container, events);
+     super(container, events);
 
-        if (this._submit) {
+     if (this._submit) {
         
-          this._submit.addEventListener('click', (event) => {
+      this._submit.addEventListener('click', (event) => {
           
-            event.preventDefault();
+       event.preventDefault();
             
-              events.emit('contacts:submit');
+       events.emit('contacts:submit');
               
-          });
+      });
           
-      }
+     }
       
   }
   

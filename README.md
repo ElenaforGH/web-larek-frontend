@@ -40,8 +40,10 @@ npm run build
 ```
 yarn build
 ```
-Интерфейсы и типы:
+### Интерфейсы и типы:
+
 type EventName = string | RegExp;
+
 type Subscriber = Function;
 
 type EmitterEvent = {
@@ -157,15 +159,19 @@ export interface ISuccessActions {
   onClick: () => void;
 }
 
-Базовый код
-Класс Api
+### Базовый код
+#### Класс Api
+
 Класс Api содержит в себе базовую логику отправки запросов. 
 
-Поля класса:
+- Поля класса:
+
 readonly baseUrl: string;
+
 protected options: RequestInit;
 
-Конструктор:
+- Конструктор:
+
     constructor(baseUrl: string, options: RequestInit = {}) {
         this.baseUrl = baseUrl;
         this.options = {
@@ -176,111 +182,167 @@ protected options: RequestInit;
         };
     }
 
-Методы:
-protected handleResponse(response: Response): Promise<object>  - метод-обработчик ответа с сервера. Если запрос успешен, возвращает результат запроса в формате JSON, если нет — возвращает ошибку.
-get(uri: string) — метод для получения данных с сервера при помощи GET-запроса к серверу.
+- Методы:
+
+protected handleResponse(response: Response): Promise<object>  - метод-обработчик ответа с сервера. Если запрос успешен, возвращает результат запроса в формате JSON, если нет — возвращает ошибку;
+
+get(uri: string) — метод для получения данных с сервера при помощи GET-запроса к серверу;
+
 post(uri: string, data: object, method: ApiPostMethods = 'POST') — метод для отправки данных на сервер при помощи метода POST.
 
 
-Класс EventEmitter
+#### Класс EventEmitter
+
 Класс EventEmitter позволяет подписываться на события и уведомлять подписчиков о наступлении события. 
 
-Поля класса:
+- Поля класса:
+
  _events: Map<EventName, Set<Subscriber>>;
 
-Конструктор:
+- Конструктор:
+
    constructor() {
         this._events = new Map<EventName, Set<Subscriber>>();
     }
 
-Методы:
-on<T extends object>(eventName: EventName, callback: (event: T) => void)
-– метод для подписки на событие.
-off(eventName: EventName, callback: Subscriber) – метод для отписки от события.
-emit<T extends object>(eventName: string, data?: T) – метод для уведомления подписчиков о наступлении события.
-onAll(callback: (event: EmitterEvent) => void) — метод для подписки на все события.
-offAll() - метод для отписки от всех событий.
+- Методы:
+
+on<T extends object>(eventName: EventName, callback: (event: T) => void) – метод для подписки на событие;
+
+off(eventName: EventName, callback: Subscriber) – метод для отписки от события;
+
+emit<T extends object>(eventName: string, data?: T) – метод для уведомления подписчиков о наступлении события;
+
+onAll(callback: (event: EmitterEvent) => void) — метод для подписки на все события;
+
+offAll() - метод для отписки от всех событий;
+
 trigger<T extends object>(eventName: string, context?: Partial<T>) - метод, генерирующий заданное событие с заданными аргументами. 
 
-Класс Component
+#### Класс Component
 Абстрактный класс Component является родителем всех компонентов слоя представления.
 
-Конструктор:
+- Конструктор:
+
    protected constructor(protected readonly container: HTMLElement) {
     }
 
-Методы: 
+- Методы: 
+
 toggleClass(element: HTMLElement, className: string, force?: boolean) — для переключения класса;
+
 protected setText(element: HTMLElement, value: unknown) — для установки текстового содержимого;
+
 setDisabled(element: HTMLElement, state: boolean) — для изменения статуса блокировки;
+
 protected setHidden(element: HTMLElement) — для скрытия элемента;
+
 protected setVisible(element: HTMLElement) — для отображения элемента;
+
 protected setImage(element: HTMLImageElement, src: string, alt?: string) — устанавливает изображение с альтернативным текстом;
+
 render(data?: Partial<T>): HTMLElement  - возвращает корневой DOM-элемент.
 
-Класс Model
+#### Класс Model
+
 Базовый абстрактный класс, предназначенный для создания моделей данных.
 
-Конструктор:
+- Конструктор:
+
     constructor(data: Partial<T>, protected events: IEvents) {
         Object.assign(this, data);
     }
 
-Методы:
+- Методы:
+
 emitChanges(event: string, payload?: object) — уведомляет подписчиков об изменении модели.
-Слой данных
-Класс AppState
+
+### Слой данных
+
+#### Класс AppState
+
 Класс AppState отвечает за хранение данных приложения и содержит методы для работы с этими данными.
 
-Поля класса:
+- Поля класса:
+
 basket: ICard[] = [];
+
 catalog: ICard[] = [];
+
 order: IOrder;
+
 preview: string | null;
+
 formErrors: FormErrors = {}.
 
-Методы:
+- Методы:
+
 clearBasket()  - для очищения корзины;
+
 getTotal()  - для получения общей стоимости товаров;
+
 addCardToBasket(item: ICard) - для добавления товара в корзину;
+
 deleteCardFromBasket(item: ICard) - для удаления товара из корзины; 
+
 updateBasket() - для обновления корзины и изменения показателя счетчика;
+
 setPreview(item: ICard) - устанавливает превью карточки;
+
 setCatalog(items: ICard[]) - устанавливает каталог товаров;
+
 setOrderField(field: keyof IOrderForm | keyof IContactsForm, value: string) - устанавливает значение для поля заказа;
+
 validateOrder() и  validateContacts() - для проверки данных заказа на валидность.
 
-Класс LarekAPI
+#### Класс LarekAPI
+
 Класс LarekAPI предоставляет методы, реализующие взаимодействие с бэкендом сервиса.
 
-Поля класса:
+- Поля класса:
+
 readonly cdn: string;
 
-Конструктор:
+- Конструктор:
+
     constructor(cdn: string, baseUrl: string, options?: RequestInit) {
         super(baseUrl, options);
         this.cdn = cdn;
     }
 
-Методы класса: 
+- Методы класса: 
+
 getProduct(id: string): Promise<ICard> - для получения данных с сервера о конкретном товаре по его идентификатору;
+
 getProductsList(): Promise<ICard[]> - для получения списка товаров с сервера;
+
 orderProducts(order: IOrder): Promise<IOrderResult> - для отправки на сервер информации о заказе.
 
 
-Классы представления
-Класс Card
+### Классы представления
+
+#### Класс Card
+
 Класс Card отвечает за отображение карточки товара. В конструктор класса передается DOM элемент темплейта, что позволяет формировать карточки разных вариантов верстки. 
 
-Поля класса:
+- Поля класса:
+
 protected _description?: HTMLElement;
+
 protected _image?: HTMLImageElement;
+
 protected _title: HTMLElement ;
+
 protected _price: HTMLElement ;
+
 protected _category?: HTMLElement;
+
 protected _index?: HTMLElement;
+
 protected _button?: HTMLButtonElement.
-Конструктор:
+
+- Конструктор:
+
     constructor (protected blockName: string, container: HTMLElement, actions?: IActions) {
         super(container);
         this._title = container.querySelector(`.${blockName}__title`);
@@ -300,24 +362,38 @@ protected _button?: HTMLButtonElement.
         }       
     }
 
-Методы:
+- Методы:
+
 set id(value: string) — устанавливает идентификатор карточки;
+
 set title(value: string) — устанавливает название карточки;
+
 set image(value: string) — устанавливает изображение в карточке;
+
 set description(value: string | string[]) - устанавливает описание в карточке;
+
 set category(value: string)  - устанавливает категорию в карточке;
+
 set price(value: number | null) — устанавливает цену в карточке;
+
 set index(value: string) — устанавливает индекс карточки;
+
 changeButtonText(value: boolean) — изменяет текстовое содержимое кнопки.
 
-Класс Basket
+#### Класс Basket
+
 Класс Basket предназначен для отображения данных корзины.
-Поля класса:
+
+- Поля класса:
+
 protected _list: HTMLElement;
+
 protected _total: HTMLElement;
+
 protected _button: HTMLElement;
 
-Конструктор:
+- Конструктор:
+
     constructor(container: HTMLElement, protected events: EventEmitter) {
         super(container);
 
@@ -332,18 +408,25 @@ protected _button: HTMLElement;
         }
     }
 
-Методы:
+- Методы:
+
 set items(items: HTMLElement[]) - устанавливает список товаров в корзине. В зависимости от длины списка товаров меняется состояние кнопки «Оформить» и отображение сообщения «Корзина пуста»;
+
 set total(total: number) — устанавливает общую стоимость товаров в корзине;
+
 clearBasket() - очищает корзину и обнуляет счетчик.
 
-Класс Form
+#### Класс Form
+
 Класс Form предназначен для взаимодействия с формами приложения. 
-Поля класса:
+
+- Поля класса:
+
 protected _submit: HTMLButtonElement;
+
 protected _errors: HTMLElement;
 
-Конструктор:
+- Конструктор:
 
     constructor(protected container: HTMLFormElement, protected events: IEvents) {
         super(container);
@@ -364,19 +447,28 @@ protected _errors: HTMLElement;
         });
     }
 
-Методы:
+- Методы:
+
 protected onInputChange(field: keyof T, value: string) — вызывает событие изменения поля ввода формы;
+
 set valid(value: boolean)  - устанавливает состояние кнопки формы в зависимости от  валидности данных;
+
 set errors(value: string) — устанавливает текст ошибок формы; 
+
 render(state: Partial<T> & IFormState) – отрисовывает форму;
 
-Класс Modal
+#### Класс Modal
+
 Класс Modal предназначен для реализации модальных окон.
-Поля класса:
+
+- Поля класса:
+
 protected _closeButton: HTMLButtonElement;
+
 protected _content: HTMLElement;
 
-Конструктор:
+- Конструктор:
+
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
 
@@ -388,19 +480,28 @@ protected _content: HTMLElement;
         this._content.addEventListener('click', (event) => event.stopPropagation());
     }
 
-Методы:
+- Методы:
+
 set content(value: HTMLElement) - устанавливает содержимое модального окна;
+
 open() - для открытия модального окна;
+
 close() - для закрытия модального окна;
+
 render(data: IModalData): HTMLElement — отрисовывает модальное окно;
  
-Класс Success
+#### Класс Success
+
 Класс Success предназначен для реализации модального окна об успешном оформлении заказа.
-Поля класса:
+
+- Поля класса:
+
 protected _close: HTMLElement;
+
 protected _description: HTMLElement;
 
-Конструктор:
+- Конструктор:
+
     constructor(container: HTMLElement, actions: ISuccessActions) {
         super(container);
 
@@ -412,18 +513,26 @@ protected _description: HTMLElement;
         }
     }
 
-Методы:
+- Методы:
+
 set total(value: number) — устанавливает общую итоговую стоимость товаров в заказе;
 
-Класс Page
+#### Класс Page
+
 Класс Page предназначен для отображения главной страницы приложения. 
-Поля класса:
+
+- Поля класса:
+
 protected _counter: HTMLElement;
+
 protected _catalog: HTMLElement;
+
 protected _wrapper: HTMLElement;
+
 protected _basket: HTMLElement;
 
-Конструктор:
+- Конструктор:
+
     constructor(container: HTMLElement, protected events: IEvents) {
         super(container);
 
@@ -437,18 +546,26 @@ protected _basket: HTMLElement;
         });
     }
 
-Методы:
+- Методы:
+
 set counter(value: number) — устанавливает значение счетчика корзины;
+
 set catalog(items: HTMLElement[]) - устанавливает каталог товаров;
+
 set locked(value: boolean) — устанавливает состояние блокировки страницы.
 
-Класс Order
+#### Класс Order
+
 Класс Order предназначен для отображения формы заказа со способом оплаты и адресом доставки.
-Поля класса:
+
+- Поля класса:
+
 protected _buttonCard: HTMLButtonElement;
+
 protected _buttonCash: HTMLButtonElement;
 
-Конструктор:
+- Конструктор:
+
   constructor(container: HTMLFormElement, events: IEvents) {
     super(container, events);
 
@@ -471,50 +588,81 @@ protected _buttonCash: HTMLButtonElement;
         event.preventDefault();
         events.emit('contacts:open');
       });
+      
    }
+   
+- Методы:
 
-Методы:
 set address(value: string) — устанавливает адрес доставки;
+
 clearPayment() - сбрасывает способ оплаты заказа.
 
-Класс Contacts
+#### Класс Contacts
+
 Класс Contacts предназначен для отображения формы заказа с контактными данными (электронная почта, телефон).
 
-Конструктор:
+- Конструктор:
+
     constructor(container: HTMLFormElement, events: IEvents) {
+    
         super(container, events);
 
         if (this._submit) {
+        
           this._submit.addEventListener('click', (event) => {
+          
             event.preventDefault();
+            
               events.emit('contacts:submit');
+              
           });
+          
       }
+      
   }
+  
+- Методы:
 
-Методы:
 set phone(value: string) — устанавливает номер телефона;
+
 set email(value: string) — устанавливает электронную почту.
 
-Список всех событий, которые могут генерироваться в системе:
+### Список всех событий, которые могут генерироваться в системе:
 
 'items:changed' — изменение каталога товаров;
+
 'contacts:submit' - отправка данных заказа;
+
 'formErrors:change' - изменилось состояние валидации формы;
+
 'order.payment:change' — изменение оплаты в форме заказа;
+
 'order.address:change' — изменение адреса в форме заказа;
+
 'contacts.email:change' — изменение электронной почты в форме заказа;
+
 'contacts.phone:change' — изменение телефона в форме заказа;
+
 'order:open' — открыть форму заказа с выбором способа оплаты и адресом доставки;
+
 'contacts:open' — открыть форму заказа с контактными данными (телефон, электронная почта);
+
 'basket:open' — открыть корзину;
+
 'basket:changed' — изменение корзины;
+
 'card:select' — выбран товар;
+
 'preview:changed' — изменение карточки товара;
+
 'counter:changed' — изменение показателя счетчика корзины;
+
 'product:add' — добавление товара в корзину;
+
 'product:delete' — удаление товара из корзины;
+
 'modal:open' — открытие модального окна;
+
 'modal:close' — закрытие модального окна.
 
 

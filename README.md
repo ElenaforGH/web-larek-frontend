@@ -1,3 +1,4 @@
+https://github.com/ElenaforGH/web-larek-frontend.git
 # Проектная работа "Веб-ларек"
 
 Стек: HTML, SCSS, TS, Webpack
